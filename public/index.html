@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="brand">
+      <div class="eyebrow">Operations</div>
+      <h1>Job Tracker</h1>
+    </div>
+    <div class="tools">
+      <label class="field-search">
+        <span class="visually-hidden">Search jobs and customers</span>
+        <input id="search" type="search" placeholder="Search jobs or customers" autocomplete="off">
+      </label>
+      <button class="tool" id="open-customers" type="button">Customers</button>
+      <a class="tool" href="/export.csv">Download CSV</a>
+      <button class="tool primary" id="new-job" type="button">Add job</button>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="figures" id="figures"></div>
+</div>
+
+<main class="wrap">
+  <section class="board" id="board" aria-label="Jobs by status"></section>
+  <p class="empty" id="empty" hidden></p>
+</main>
+
+<footer>
+  <div class="wrap">
+    Every job carries a customer, a date and a price · export to CSV at any
+    time · nothing here is locked in
+  </div>
+</footer>
+
+<!-- ------------------------------------------------------------ job form -->
+<dialog id="job-dialog" aria-labelledby="job-dialog-title">
+  <form id="job-form" method="dialog">
+    <div class="dialog-head">
+      <div class="eyebrow" id="job-dialog-eyebrow">New record</div>
+      <h2 id="job-dialog-title">Add job</h2>
+    </div>
+
+    <div class="dialog-body">
+      <p class="notice" id="job-error" hidden></p>
+
+      <label class="field">
+        <span>Customer</span>
+        <select name="customer_id" id="customer-select" required></select>
+      </label>
+
+      <label class="field">
+        <span>Job</span>
+        <input name="title" id="title" required maxlength="120"
+               placeholder="What are you building for them?">
+      </label>
+
+      <label class="field">
+        <span>Detail</span>
+        <textarea name="description" id="description" rows="3"
+                  placeholder="Scope, access needed, anything you'll forget by Thursday"></textarea>
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span>Status</span>
+          <select name="status" id="status">
+            <option value="scheduled">Scheduled</option>
+            <option value="in_progress">In progress</option>
+            <option value="blocked">Blocked</option>
+            <option value="done">Done</option>
+            <option value="invoiced">Invoiced</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Due</span>
+          <input name="scheduled_for" id="scheduled-for" type="date">
+        </label>
+
+        <label class="field">
+          <span>Price (€)</span>
+          <input name="price" id="price" type="number" min="0" step="0.01" value="0">
+        </label>
+      </div>
+    </div>
+
+    <menu class="dialog-foot">
+      <button type="button" class="tool danger" id="delete-job" hidden>Delete job</button>
+      <span class="spacer"></span>
+      <button type="button" class="tool" id="job-cancel">Cancel</button>
+      <button type="button" class="tool primary" id="job-save">Save job</button>
+    </menu>
+  </form>
+</dialog>
+
+<!-- ------------------------------------------------------- customer list -->
+<dialog id="customer-dialog" aria-labelledby="customer-dialog-title">
+  <form id="customer-form" method="dialog">
+    <div class="dialog-head">
+      <div class="eyebrow">Directory</div>
+      <h2 id="customer-dialog-title">Customers</h2>
+    </div>
+
+    <div class="dialog-body">
+      <p class="notice" id="customer-error" hidden></p>
+
+      <ul class="customer-list" id="customer-list"></ul>
+
+      <div class="add-row">
+        <label class="field">
+          <span>Name</span>
+          <input id="customer-name" maxlength="120" placeholder="Hafen Bäckerei GmbH">
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input id="customer-email" type="email" placeholder="buero@example.com">
+        </label>
+        <label class="field">
+          <span>Phone</span>
+          <input id="customer-phone" placeholder="+49 40 1234567">
+        </label>
+        <button type="button" class="tool primary" id="customer-add">Add</button>
+      </div>
+    </div>
+
+    <menu class="dialog-foot">
+      <span class="spacer"></span>
+      <button type="button" class="tool" id="customer-close">Done</button>
+    </menu>
+  </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
